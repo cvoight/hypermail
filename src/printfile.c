@@ -422,9 +422,9 @@ void print_index_header(FILE *fp, char *label, char *dir, char *subject,
 #else
         print_main_header(fp, TRUE, label, NULL, NULL, subject, NULL, NULL, NULL, 0, 0);
 #endif
-	fprintf (fp, "<div class=\"head\">\n");
+	fprintf (fp, "<header>\n");
 	if (ihtmlnavbar2upfile)
-	  fprintf(fp, "<map title=\"%s\" id=\"upper\">\n%s</map>\n", 
+	  fprintf(fp, "<nav class=\"header\">\n%s</nav>\n", 
 		  lang[MSG_NAVBAR2UPPERLEVELS], ihtmlnavbar2upfile);
 
 	fprintf(fp, "<h1>%s %s</h1>\n", label, subject);
@@ -451,7 +451,7 @@ void printfooter(FILE *fp, char *htmlfooter, char *label, char *dir,
 	fprintf(fp, "</em></small></p>\n");
     }
     if (close_div)
-      fprintf (fp, "</div>\n");
+      fprintf (fp, "</footer>\n");
     fprintf(fp, "</body>\n</html>\n");
 }
 
@@ -462,9 +462,9 @@ void printfooter(FILE *fp, char *htmlfooter, char *label, char *dir,
 void printlaststats (FILE *fp, long lastdatenum)
 {
     fprintf (fp, "<ul>\n");
-    fprintf (fp, "<li><dfn><a id=\"end\" name=\"end\">%s</a></dfn>: <em>%s</em></li>\n",
+    fprintf (fp, "<li><b><a id=\"end\" name=\"end\">%s</a></b>: <em>%s</em></li>\n",
 	     lang[MSG_LAST_MESSAGE_DATE], getdatestr(lastdatenum));
 
-    fprintf (fp, "<li><dfn>%s</dfn>: %s</li>\n",  lang[MSG_ARCHIVED_ON], getlocaltime());
+    fprintf (fp, "<li><b>%s</b>: %s</li>\n",  lang[MSG_ARCHIVED_ON], getlocaltime());
     fprintf (fp, "</ul>\n");
 }

@@ -281,7 +281,7 @@ void fprint_menu0(FILE *fp, struct emailinfo *email, int pos)
   }
 
   if (set_mailcommand && set_hmail) {
-    fprintf(fp, "<li><a name=\"%s\" id=\"%s\"></a><dfn>%s</dfn>:", 
+    fprintf(fp, "<li><a name=\"%s\" id=\"%s\"></a><b>%s</b>:", 
 	    id,id,lang[MSG_MAIL_ACTIONS]);
     if ((email->msgid && email->msgid[0]) || (email->subject && email->subject[0])) {
 #ifdef HAVE_ICONV
@@ -309,7 +309,7 @@ void fprint_menu0(FILE *fp, struct emailinfo *email, int pos)
     /* add the anchor if we didn't do so in the above block */
     if (!(set_mailcommand && set_hmail))
       fprintf (fp, "<a name=\"%s\" id=\"%s\"></a>",id,id);
-    fprintf(fp, "<dfn>%s</dfn>:", lang[MSG_CONTEMPORARY_MSGS_SORTED]);
+    fprintf(fp, "<b>%s</b>:", lang[MSG_CONTEMPORARY_MSGS_SORTED]);
     if (show_index[dlev][DATE_INDEX])
       fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]", 
 	      index_name[dlev][DATE_INDEX], set_fragment_prefix, num, 
@@ -332,11 +332,11 @@ void fprint_menu0(FILE *fp, struct emailinfo *email, int pos)
 	      lang[MSG_LTITLE_BY_ATTACHMENT], lang[MSG_BY_ATTACHMENT]);
     fprintf (fp, "</li>\n");
     if (ihtmlhelpupfile)
-      fprintf(fp, "<li><dfn>%s</dfn>: %s</li>", lang[MSG_HELP], ihtmlhelpupfile);
+      fprintf(fp, "<li><b>%s</b>: %s</li>", lang[MSG_HELP], ihtmlhelpupfile);
   }
   
   if (set_custom_archives && *set_custom_archives)
-    fprintf(fp, "<li><dfn>%s</dfn>: %s</li>\n", lang[MSG_OTHER_MAIL_ARCHIVES], set_custom_archives);
+    fprintf(fp, "<li><b>%s</b>: %s</li>\n", lang[MSG_OTHER_MAIL_ARCHIVES], set_custom_archives);
 
   if (!(set_show_msg_links && set_show_msg_links != loc_cmp)
       || (set_show_index_links && set_show_index_links != loc_cmp)) {
@@ -399,7 +399,7 @@ void print_index_header_links (FILE *fp, mindex_t called_from, long startdatenum
 #endif
 
 
-    fprintf(fp, "<map title=\"%s\" id=\"navbar\" name=\"navbar\">\n", lang[MSG_NAVBAR]);
+    fprintf(fp, "<nav class=\"header\">\n");
     fprintf(fp, "<ul>\n");
     /*
      * Printout the Dates for the Starting and Ending messages 
@@ -410,19 +410,19 @@ void print_index_header_links (FILE *fp, mindex_t called_from, long startdatenum
 	|| (called_from != DATE_INDEX && show_index[dlev][DATE_INDEX]) 
 	|| (called_from != THREAD_INDEX && show_index[dlev][THREAD_INDEX]) 
 	|| (called_from != SUBJECT_INDEX && show_index[dlev][SUBJECT_INDEX])) {
-      fprintf(fp, "<li><dfn><a href=\"#first\" title=\"jump to messages list\" "
-	      "tabindex=\"1\">%d %s</a></dfn>:"
-	      " <dfn>%s</dfn> %s,",
+      fprintf(fp, "<li><b><a href=\"#first\" title=\"jump to messages list\" "
+	      "tabindex=\"1\">%d %s</a></b>:"
+	      " <b>%s</b> %s,",
 	      amountmsgs, lang[MSG_ARTICLES],
 	      lang[MSG_STARTING], getdatestr(startdatenum));
-      fprintf(fp, " <dfn>%s</dfn> %s</li>\n",
+      fprintf(fp, " <b>%s</b> %s</li>\n",
 	      lang[MSG_ENDING], getdatestr(enddatenum));
 
       if (!set_reverse && (called_from != AUTHOR_INDEX && called_from != SUBJECT_INDEX))
-	fprintf (fp, "<li><dfn>%s</dfn>: <a href=\"#end\">%s</a></li>\n", lang[MSG_THIS_PERIOD],
+	fprintf (fp, "<li><b>%s</b>: <a href=\"#end\">%s</a></li>\n", lang[MSG_THIS_PERIOD],
 		 lang[MSG_MOST_RECENT_MESSAGES]);
 
-      fprintf (fp, "<li><dfn>%s</dfn>:", lang[MSG_SORT_BY]);
+      fprintf (fp, "<li><b>%s</b>:", lang[MSG_SORT_BY]);
     }
 
     /* print the links to the other indexes */
@@ -472,14 +472,14 @@ void print_index_header_links (FILE *fp, mindex_t called_from, long startdatenum
     /* print the mail actions */
     if (set_mailcommand && set_hmail) {
       ptr = makemailcommand("mailto:$TO", set_hmail, "", "");
-      fprintf (fp, "<li><dfn>%s</dfn>: [ <a href=\"%s\" accesskey=\"n\">%s</a> ]</li>\n",
+      fprintf (fp, "<li><b>%s</b>: [ <a href=\"%s\" accesskey=\"n\">%s</a> ]</li>\n",
 	       lang[MSG_MAIL_ACTIONS], ptr ? ptr : "", lang[MSG_MA_NEW_MESSAGE]);
       if (ptr)
 	free (ptr);
     }
 
     if (subdir) {
-      fprintf(fp, "<li><dfn>%s</dfn>:", lang[MSG_OTHER_PERIODS]);
+      fprintf(fp, "<li><b>%s</b>:", lang[MSG_OTHER_PERIODS]);
       if (subdir->prior_subdir)
 	fprintf(fp, "[ <a href=\"%s%s%s\" title=\"%s\">%s, %s</a> ] ", 
 		subdir->rel_path_to_top, subdir->prior_subdir->subdir, 
@@ -500,12 +500,12 @@ void print_index_header_links (FILE *fp, mindex_t called_from, long startdatenum
     
     /* the following are the custom options */
     if (ihtmlhelpupfile)
-      fprintf(fp, "<li><dfn>%s</dfn>: %s</li>", lang[MSG_HELP], ihtmlhelpupfile);     
+      fprintf(fp, "<li><b>%s</b>: %s</li>", lang[MSG_HELP], ihtmlhelpupfile);     
 
     if ((set_about && *set_about) 
 	|| (set_archives && *set_archives))
       {
-	fprintf (fp, "<li><dfn>%s</dfn>:", lang[MSG_NEARBY]);
+	fprintf (fp, "<li><b>%s</b>:", lang[MSG_NEARBY]);
 	if (set_about && *set_about)
 	  fprintf(fp, " [ <a href=\"%s\">%s</a> ]", set_about, lang[MSG_ABOUT_THIS_ARCHIVE]);
 	
@@ -516,10 +516,10 @@ void print_index_header_links (FILE *fp, mindex_t called_from, long startdatenum
       }
 
     if (set_custom_archives && *set_custom_archives)
-      fprintf(fp, "<li><dfn>%s</dfn>: %s</li>\n", lang[MSG_OTHER_MAIL_ARCHIVES], 
+      fprintf(fp, "<li><b>%s</b>: %s</li>\n", lang[MSG_OTHER_MAIL_ARCHIVES], 
 	      set_custom_archives);
 
-    fprintf (fp, "</ul>\n</map>\n");
+    fprintf (fp, "</ul>\n</nav>\n");
 
     /*
      * Printout the Dates for the Starting and Ending messages 
@@ -548,16 +548,16 @@ void print_index_footer_links(FILE *fp, mindex_t called_from, long enddatenum, i
     printcomment(fp, "index_footer_links", "begin");
 #endif
 
-    fprintf (fp, "<div class=\"foot\">\n");
-    fprintf (fp, "<map title=\"%s\" id=\"navbarfoot\" name=\"navbarfoot\">\n", lang[MSG_NAVBAR]);
+    fprintf (fp, "<footer>\n");
+    fprintf (fp, "<nav class=\"footer\">\n");
     fprintf (fp, "<ul>\n");
     
     if ((called_from != AUTHOR_INDEX && show_index[dlev][AUTHOR_INDEX]) 
 	|| (called_from != DATE_INDEX && show_index[dlev][DATE_INDEX]) 
 	|| (called_from != THREAD_INDEX && show_index[dlev][THREAD_INDEX]) 
 	|| (called_from != SUBJECT_INDEX && show_index[dlev][SUBJECT_INDEX]))
-      fprintf(fp, "<li><dfn><a href=\"#first\">%d %s</a> "
-	      "%s</dfn>:\n",
+      fprintf(fp, "<li><b><a href=\"#first\">%d %s</a> "
+	      "%s</b>:\n",
 	      amountmsgs, lang[MSG_ARTICLES],
 	      lang[MSG_SORT_BY]);
 
@@ -608,14 +608,14 @@ void print_index_footer_links(FILE *fp, mindex_t called_from, long enddatenum, i
     /* print the mail actions */
     if (set_mailcommand && set_hmail) {
       ptr = makemailcommand("mailto:$TO", set_hmail, "", "");
-      fprintf (fp, "<li><dfn>%s</dfn>: [ <a href=\"%s\">%s</a> ]</li>\n",
+      fprintf (fp, "<li><b>%s</b>: [ <a href=\"%s\">%s</a> ]</li>\n",
 	       lang[MSG_MAIL_ACTIONS], ptr ? ptr : "", lang[MSG_MA_NEW_MESSAGE]);
       if (ptr)
 	free (ptr);
     }
 
     if (subdir) {
-      fprintf(fp, "<li><dfn>%s</dfn>:", lang[MSG_OTHER_PERIODS]);
+      fprintf(fp, "<li><b>%s</b>:", lang[MSG_OTHER_PERIODS]);
       if (subdir->prior_subdir)
 	fprintf(fp, "[ <a href=\"%s%s%s\" title=\"%s\">%s, %s</a> ] ", 
 		subdir->rel_path_to_top, subdir->prior_subdir->subdir, 
@@ -635,12 +635,12 @@ void print_index_footer_links(FILE *fp, mindex_t called_from, long enddatenum, i
     }
     
     if (ihtmlhelplowfile)
-      fprintf(fp, "<li><dfn>%s</dfn>: %s</li>", lang[MSG_HELP], ihtmlhelplowfile);     
+      fprintf(fp, "<li><b>%s</b>: %s</li>", lang[MSG_HELP], ihtmlhelplowfile);     
 
     if ((set_about && *set_about) 
 	|| (set_archives && *set_archives))
       {
-	fprintf (fp, "<li><dfn>%s</dfn>:", lang[MSG_NEARBY]);
+	fprintf (fp, "<li><b>%s</b>:", lang[MSG_NEARBY]);
 	if (set_about && *set_about)
 	  fprintf(fp, " [ <a href=\"%s\">%s</a> ]", set_about, lang[MSG_ABOUT_THIS_ARCHIVE]);
 	if (set_archives && *set_archives)
@@ -649,10 +649,10 @@ void print_index_footer_links(FILE *fp, mindex_t called_from, long enddatenum, i
       }
 
     if (set_custom_archives && *set_custom_archives)
-      fprintf(fp, "<li><dfn>%s</dfn>: %s</li>\n", lang[MSG_OTHER_MAIL_ARCHIVES], 
+      fprintf(fp, "<li><b>%s</b>: %s</li>\n", lang[MSG_OTHER_MAIL_ARCHIVES], 
 	      set_custom_archives);
     
-    fprintf (fp, "</ul>\n</map>\n");
+    fprintf (fp, "</ul>\n</nav>\n");
 
 #if DEBUG_HTML
     printcomment(fp, "index_footer_links", "end");
@@ -816,7 +816,7 @@ void printdates(FILE *fp, struct header *hp, int year, int month, struct emailin
 	  }
 	  else
 	    is_first = TRUE;
-	  snprintf(date_str, sizeof(date_str), "<li>%s<dfn>%s</dfn><ul>\n", 
+	  snprintf(date_str, sizeof(date_str), "<li>%s<b>%s</b><ul>\n", 
 		  (is_first) ? first_attributes : "", tmp);
 	  fprintf (fp, "%s", date_str);
 	  strcpy (prev_date_str, tmp);
@@ -878,7 +878,7 @@ int printattachments(FILE *fp, struct header *hp, struct emailinfo *subdir_email
 		  fprintf(fp, "<tr><td>%s%s</a></td><td><a name=\"%s%d\" id=\"%s%d\"><em>%s</em></a></td>" "<td>%s</td></tr>\n", msg_href(em, subdir_email, TRUE), subject, set_fragment_prefix, em->msgnum, set_fragment_prefix, em->msgnum, name, getindexdatestr(em->date));
 		}
 		else {
-		  fprintf(fp, "<li>%s%s<dfn>%s</dfn></a>&nbsp;" 
+		  fprintf(fp, "<li>%s%s<b>%s</b></a>&nbsp;" 
 			  "<a name=\"%s%d\" id=\"%s%d\"><em>%s</em></a>&nbsp;<em>(%s)</em>\n", 
 			  (*is_first) ? first_attributes : "",
 			  msg_href(em, subdir_email, TRUE), subject, 
@@ -1158,7 +1158,7 @@ void printheaders (FILE *fp, struct emailinfo *email)
 	  /* we print the header, escaping it as needed */
 
 	  header_content = bp->line + strlen (head) + 2;
-	  fprintf (fp, "<span id=\"%s\"><dfn>%s</dfn>: ",
+	  fprintf (fp, "<span id=\"%s\"><b>%s</b>: ",
 		   head_lower, head);
 
 
@@ -1469,10 +1469,10 @@ void print_headers(FILE *fp, struct emailinfo *email, int in_thread_file)
 {	
   /*
    * Print the message's author info and date.
-   * General form: <span><dfn>from:<dfn>: name <email></span><br /> 
+   * General form: <span><b>from:</b>: name <email></span><br /> 
    */
 
-  fprintf(fp, "<address class=\"headers\">\n");
+  fprintf(fp, "<ul class=\"message-headers\">\n");
 
 #ifdef HAVE_ICONV
   size_t tmplen;
@@ -1486,8 +1486,8 @@ void print_headers(FILE *fp, struct emailinfo *email, int in_thread_file)
 #endif
   
   /* the from header */
-  fprintf (fp, "<span id=\"from\">\n");
-  fprintf (fp, "<dfn>%s</dfn>: ", lang[MSG_FROM]);
+  fprintf (fp, "<li id=\"from\">\n");
+  fprintf (fp, "<b>%s</b>: ", lang[MSG_FROM]);
   if (REMOVE_MESSAGE(email)) {
     /* don't show the email address and name if we have deleted the message */
     fprintf(fp, "&lt;%s&gt;", lang[MSG_SENDER_DELETED]);
@@ -1528,21 +1528,21 @@ void print_headers(FILE *fp, struct emailinfo *email, int in_thread_file)
 	      (strcmp(email->emailaddr, "(no email)") != 0) ? email->emailaddr : "no email");
     }
   }
-  fprintf (fp, "\n</span><br />\n");
+  fprintf (fp, "\n</li><br />\n");
   
   /* subject */
   if (in_thread_file)
 #ifdef HAVE_ICONV
-    fprintf(fp, "<span id=\"subject\"><dfn>%s</dfn>: %s</span><br />\n", lang[MSG_SUBJECT], tmpsubject);
+    fprintf(fp, "<li id=\"subject\"><b>%s</b>: %s</li><br />\n", lang[MSG_SUBJECT], tmpsubject);
 #else
-    fprintf(fp, "<span id=\"subject\"><dfn>%s</dfn>: %s</span><br />\n", lang[MSG_SUBJECT], tmpsubject=convchars(email->subject,email->charset));
+    fprintf(fp, "<li id=\"subject\"><b>%s</b>: %s</li><br />\n", lang[MSG_SUBJECT], tmpsubject=convchars(email->subject,email->charset));
 #endif
   /* date */
-  fprintf(fp, "<span id=\"date\"><dfn>%s</dfn>: %s</span><br />\n", lang[MSG_CDATE], email->datestr);
+  fprintf(fp, "<li id=\"date\"><b>%s</b>: %s</li><br />\n", lang[MSG_CDATE], email->datestr);
 
   printheaders (fp, email);
 
-  fprintf(fp, "</address>\n");
+  fprintf(fp, "</ul>\n");
 
     if(tmpsubject)
      free(tmpsubject);
@@ -1588,9 +1588,9 @@ print_replies(FILE *fp, struct emailinfo *email, int num, int in_thread_file)
 	        fprintf (fp, "<li>");
 
 	    if (rp->maybereply)
-		fprintf(fp, "<dfn>%s</dfn>:", lang[MSG_MAYBE_REPLY]);
+		fprintf(fp, "<b>%s</b>:", lang[MSG_MAYBE_REPLY]);
 	    else
-	        fprintf(fp, "<dfn>%s</dfn>:", lang[MSG_REPLY]);
+	        fprintf(fp, "<b>%s</b>:", lang[MSG_REPLY]);
 	    fprintf(fp, "%s <a href=\"%s\" title=\"%s\">", del_msg, 
 		    href01(email, email2, in_thread_file, FALSE),
 		    lang[MSG_LTITLE_REPLIES]);
@@ -1629,15 +1629,15 @@ int print_links_up(FILE *fp, struct emailinfo *email, int pos, int in_thread_fil
 
 	if (set_show_msg_links && set_show_msg_links != loc_cmp) {
 	    if (pos == PAGE_TOP)
-	      ptr = "navbar";
+	      ptr = "header";
 	    else
-	      ptr = "navbarfoot";
-	    fprintf(fp, "<map id=\"%s\" name=\"%s\">\n", ptr, ptr);
+	      ptr = "footer";
+	    fprintf(fp, "<nav class=\"%s\">\n", ptr);
 	    if (pos == PAGE_TOP)
 	    fprintf(fp, "<ul class=\"links\">\n");
 
 	    fprintf(fp, "<li>\n");
-	    fprintf(fp, "<dfn>%s</dfn>:\n", lang[MSG_THIS_MESSAGE]);
+	    fprintf(fp, "<b>%s</b>:\n", lang[MSG_THIS_MESSAGE]);
 	    fprintf(fp, "[ <a href=\"#start\" name=\"options1\" id=\"options1\" tabindex=\"1\">"
 		    "%s</a> ]\n", lang[MSG_MSG_BODY]);
 	    if (set_mailcommand && set_hmail) {
@@ -1675,7 +1675,7 @@ int print_links_up(FILE *fp, struct emailinfo *email, int pos, int in_thread_fil
 	    fprintf(fp, "</li>\n");
 	    
 	    fprintf(fp, "<li>\n");
-	    fprintf(fp, "<dfn>%s</dfn>:\n", lang[MSG_RELATED_MESSAGES]);
+	    fprintf(fp, "<b>%s</b>:\n", lang[MSG_RELATED_MESSAGES]);
 
 
 	    /*
@@ -1825,7 +1825,7 @@ int print_links_up(FILE *fp, struct emailinfo *email, int pos, int in_thread_fil
 		}
 
 		/* close the list */
-		fprintf (fp,"</li>\n</ul>\n</map>\n");
+		fprintf (fp,"</li>\n</ul>\n</nav>\n");
 	      }
 	      return is_reply;
 }
@@ -1851,7 +1851,7 @@ int print_links(FILE *fp, struct emailinfo *email, int pos, int in_thread_file)
 	  ** format for items: <li><dfn>Next</dfn>: <a href="0047.html" 
 	  title="wai thing">subject of message</a></li>\n */
 	     
-	  fprintf (fp, "<li><dfn>%s</dfn>: [ <a href=\"#start\">%s</a> ]</li>\n", 
+	  fprintf (fp, "<li><b>%s</b>: [ <a href=\"#start\">%s</a> ]</li>\n", 
 		   lang[MSG_THIS_MESSAGE], lang[MSG_MSG_BODY]);
 	  
 	  printcomment(fp, "lnext", "start");
@@ -1868,7 +1868,7 @@ int print_links(FILE *fp, struct emailinfo *email, int pos, int in_thread_file)
 	    ptr = convchars(email2->subject, email2->charset);
 	    ptr2 = convchars(email2->name, email2->charset);
 #endif
-	    fprintf(fp, "<li><dfn>%s</dfn>: ", lang[MSG_NEXT_MESSAGE]);
+	    fprintf(fp, "<li><b>%s</b>: ", lang[MSG_NEXT_MESSAGE]);
 	    fprintf(fp, "<a href=\"%s\" title=\"%s\">%s: \"%s\"</a></li>\n", 
 		    msg_href(email2, email, FALSE), lang[MSG_LTITLE_NEXT],
 		    ptr2 ? ptr2 : "", ptr ? ptr : "");
@@ -1896,7 +1896,7 @@ int print_links(FILE *fp, struct emailinfo *email, int pos, int in_thread_file)
 	    ptr = convchars(email2->subject, email2->charset);
 	    ptr2 = convchars(email2->name, email2->charset);
 #endif
-	    fprintf(fp, "<li><dfn>%s</dfn>: ", lang[MSG_PREVIOUS_MESSAGE]);
+	    fprintf(fp, "<li><b>%s</b>: ", lang[MSG_PREVIOUS_MESSAGE]);
 	    fprintf(fp, "<a href=\"%s\" title=\"%s\">%s: \"%s\"</a></li>\n", 
 		    msg_href(email2, email, FALSE), lang[MSG_LTITLE_PREVIOUS],
 		    ptr2 ? ptr2 : "", ptr);
@@ -1924,9 +1924,9 @@ int print_links(FILE *fp, struct emailinfo *email, int pos, int in_thread_file)
 	    ptr2 = convchars(email2->name, email2->charset);
 #endif
 	    if (subjmatch)
-	      fprintf(fp, "<li><dfn>%s</dfn>:", lang[MSG_MAYBE_IN_REPLY_TO]);
+	      fprintf(fp, "<li><b>%s</b>:", lang[MSG_MAYBE_IN_REPLY_TO]);
 	    else
-	      fprintf(fp, "<li><dfn>%s</dfn>:", lang[MSG_IN_REPLY_TO]);
+	      fprintf(fp, "<li><b>%s</b>:", lang[MSG_IN_REPLY_TO]);
 	    fprintf(fp, "%s <a href=\"%s\" title=\"%s\">%s: \"%s\"</a></li>\n", 
 		    del_msg, href01(email, email2, in_thread_file, FALSE), 
 		    lang[MSG_LTITLE_IN_REPLY_TO], ptr2, ptr);
@@ -1941,7 +1941,7 @@ int print_links(FILE *fp, struct emailinfo *email, int pos, int in_thread_file)
 	    tmpptr = makeinreplytocommand(set_inreplyto_command, email->subject, email->inreplyto);
 	    if (tmpptr) {		
 	      /* use an msgid resolver */
-	      fprintf(fp, "<li><dfn>%s</dfn>:", lang[MSG_IN_REPLY_TO]);
+	      fprintf(fp, "<li><b>%s</b>:", lang[MSG_IN_REPLY_TO]);
 	      fprintf(fp, " [ <a href=\"%s\" title=\"%s : %s\">%s</a> ]</li>\n", 
 		      tmpptr,
 		      lang[MSG_LTITLE_IN_REPLY_TO],
@@ -1964,7 +1964,7 @@ int print_links(FILE *fp, struct emailinfo *email, int pos, int in_thread_file)
 	  ptr = convchars(email_next_in_thread->subject, email_next_in_thread->charset);
 	  ptr2 = convchars(email_next_in_thread->name, email_next_in_thread->charset);
 #endif
-	  fprintf(fp, "<li><dfn>%s</dfn>: ", lang[MSG_NEXT_IN_THREAD]);
+	  fprintf(fp, "<li><b>%s</b>: ", lang[MSG_NEXT_IN_THREAD]);
 	  fprintf(fp, "<a href=\"%s\" title=\"%s\">%s: \"%s\"</a></li>\n", 
 		  href01(email, email_next_in_thread, in_thread_file, FALSE), 
 		  lang[MSG_LTITLE_NEXT_IN_THREAD], 
@@ -2226,11 +2226,11 @@ void writearticles(int startnum, int maxnum)
 			 email->msgid, email->charset, email->date, filename, 
 			 REMOVE_MESSAGE(email), email->annotation_robot);
 #endif
-	fprintf (fp, "<div class=\"head\">\n");
+	fprintf (fp, "<header>\n");
 
 	/* print the navigation bar to upper levels */
 	if (ihtmlnavbar2upfile)
-	  fprintf(fp, "<map title=\"%s\" id=\"upper\">\n%s</map>\n", 
+	  fprintf(fp, "<nav class=\"header\">\n%s</nav>\n", 
 		  lang[MSG_NAVBAR2UPPERLEVELS], ihtmlnavbar2upfile);
 
 	/* reset the value of ptr before we actually start using it,
@@ -2296,7 +2296,7 @@ void writearticles(int startnum, int maxnum)
 	    fprint_menu0(fp, email, PAGE_TOP);
 	if ((set_show_msg_links && set_show_msg_links != 4) || !set_usetable)
 	  {
-	    fprintf(fp, "</div>\n");
+	    fprintf(fp, "</header>\n");
 	  }
 
 	/*
@@ -2304,10 +2304,10 @@ void writearticles(int startnum, int maxnum)
 	 */
 
 	printcomment(fp, "body", "start");
-	fprintf (fp, "<div class=\"mail\">\n");
+	fprintf (fp, "<div class=\"message\">\n");
 	print_headers(fp, email, FALSE);
 	printbody(fp, email, maybe_reply, is_reply);
-	fprintf (fp, "<span id=\"received\"><dfn>%s</dfn> %s</span>\n", 
+	fprintf (fp, "<span id=\"received\"><b>%s</b> %s</span>\n", 
 		 lang[MSG_RECEIVED_ON],  getdatestr(email->fromdate));
 	fprintf (fp, "</div>\n");
 	printcomment(fp, "body", "end");
@@ -2316,16 +2316,16 @@ void writearticles(int startnum, int maxnum)
 	 * Should we print out the message links ?
 	 */
 
-	fprintf (fp, "<div class=\"foot\">\n");
-	fprintf (fp, "<map id=\"navbarfoot\" name=\"navbarfoot\" title=\"%s\">\n", 
+	fprintf (fp, "<footer>\n");
+	fprintf (fp, "<nav class=\"footer\" title=\"%s\">\n", 
 		 lang[MSG_RELATED_MESSAGES]);
 	
 	print_links(fp, email, PAGE_BOTTOM, FALSE);
 
 	fprint_menu0(fp, email, PAGE_BOTTOM);
 
-	fprintf(fp, "</map>\n");
-	fprintf(fp, "</div>\n");
+	fprintf(fp, "</nav>\n");
+	fprintf(fp, "</footer>\n");
 	
 	if (set_txtsuffix) {
 	  fprintf(fp, "<p><a rel=\"nofollow\" href=\"%.4d.%s\">%s</a>", email->msgnum, set_txtsuffix, lang[MSG_TXT_VERSION]);
@@ -2459,7 +2459,7 @@ void writedates(int amountmsgs, struct emailinfo *email)
      */
     print_index_header_links(fp, DATE_INDEX, start_date_num, end_date_num,
 			     amountmsgs, email ? email->subdir : NULL);
-    fprintf (fp, "</div>\n");
+    fprintf (fp, "</header>\n");
 
     /*
      * Print out the actual message index lists. Here's the beef.
@@ -2716,7 +2716,7 @@ void printsubjects(FILE *fp, struct header *hp, char **oldsubject,
 		else
 		  is_first = TRUE;
 
-		fprintf(fp, "<li>%s<dfn>%s</dfn>\n", 
+		fprintf(fp, "<li>%s<b>%s</b>\n", 
 			(is_first) ? first_attributes : "", subject);
 		fprintf(fp, "<ul>\n");
 	    }
@@ -2871,7 +2871,7 @@ void printauthors(FILE *fp, struct header *hp, char **oldname,
 	  else
 	    is_first = TRUE;
 
-	  fprintf(fp, "<li>%s<dfn>%s</dfn>\n", 
+	  fprintf(fp, "<li>%s<b>%s</b>\n", 
 		  (is_first) ? first_attributes : "",
 		  tmpname);
 	  fprintf(fp, "<ul>\n");

@@ -816,7 +816,7 @@ void printdates(FILE *fp, struct header *hp, int year, int month, struct emailin
 	  }
 	  else
 	    is_first = TRUE;
-	  snprintf(date_str, sizeof(date_str), "<li>%s<b>%s</b><ul>\n", 
+	  snprintf(date_str, sizeof(date_str), "<li>%s<small>%s</small><ul>\n", 
 		  (is_first) ? first_attributes : "", tmp);
 	  fprintf (fp, "%s", date_str);
 	  strcpy (prev_date_str, tmp);
@@ -829,7 +829,7 @@ void printdates(FILE *fp, struct header *hp, int year, int month, struct emailin
 	subj_end_tag = "";
       }
 
-      fprintf(fp,"%s<a href=\"%s\">%s%s%s</a>%s<a name=\"%s%d\" id=\"%s%d\"><em>%s</em></a>%s%s%s\n",
+      fprintf(fp,"%s<a href=\"%s\">%s%s%s</a>%s<a name=\"%s%d\" id=\"%s%d\"><small>%s</small></a>%s%s%s\n",
 	      startline, msg_href(em, subdir_email, FALSE), 
 	      subj_tag, subject, subj_end_tag, break_str, 
 	      set_fragment_prefix, em->msgnum, set_fragment_prefix, em->msgnum, 
@@ -879,7 +879,7 @@ int printattachments(FILE *fp, struct header *hp, struct emailinfo *subdir_email
 		}
 		else {
 		  fprintf(fp, "<li>%s%s<b>%s</b></a>&nbsp;" 
-			  "<a name=\"%s%d\" id=\"%s%d\"><em>%s</em></a>&nbsp;<em>(%s)</em>\n", 
+			  "<a name=\"%s%d\" id=\"%s%d\"><em>%s</em></a>&nbsp;<small>(%s)</small>\n", 
 			  (*is_first) ? first_attributes : "",
 			  msg_href(em, subdir_email, TRUE), subject, 
 			  set_fragment_prefix, em->msgnum, 
@@ -2730,7 +2730,7 @@ void printsubjects(FILE *fp, struct header *hp, char **oldsubject,
 	else {
 	    startline = "<li>";
 	    break_str = "";
-	    snprintf(date_str, sizeof(date_str), "<em>(%s)</em>", getindexdatestr(hp->data->date));
+	    snprintf(date_str, sizeof(date_str), "<small>(%s)</small>", getindexdatestr(hp->data->date));
 	    endline = "</li>";
 	}
 	fprintf(fp,
@@ -2886,7 +2886,7 @@ void printauthors(FILE *fp, struct header *hp, char **oldname,
       else {
 	startline = "<li>";
 	break_str = "&nbsp;";
-	snprintf(date_str, sizeof(date_str), "<em>(%s)</em>", getindexdatestr(hp->data->date));
+	snprintf(date_str, sizeof(date_str), "<small>(%s)</small>", getindexdatestr(hp->data->date));
 	endline = "</li>";
       }
       fprintf(fp,"%s%s%s</a>%s<a name=\"%s%d\" id=\"%s%d\">%s</a>%s\n",

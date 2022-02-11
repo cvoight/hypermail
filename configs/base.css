@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap");
+html, body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+body {
+  margin-left: 6.25%;
+  font: 400 100%/1.375 "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+header, footer {
+  list-style: none;
+}
+div.messages-list, div.message {
+  flex: 1;
+  overflow: auto;
+}
+div.message {
+  /*white-space: pre-line;*/
+  width: 69ch;
+  max-width: 100%;
+  font-size: 1em;
+  line-height: calc(1ex / 0.32);
+}
+div.message address {
+  white-space: nowrap;
+  font-size: unset;
+  line-height: 1.2;
+}
+ul {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+@media screen and (max-width: 1020px) {
+  header, footer {
+    float: none;
+    width: auto;
+  }
+}
+

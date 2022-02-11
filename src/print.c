@@ -289,7 +289,7 @@ void fprint_menu0(FILE *fp, struct emailinfo *email, int pos)
 #else
       ptr = makemailcommand(set_replymsg_command, set_hmail, email->msgid, email->subject);
 #endif
-      fprintf(fp, " [ <a href=\"%s\">%s</a> ]", ptr ? ptr : "", lang[MSG_MA_REPLY]);
+      fprintf(fp, " [ <a href=\"%s\">%s</a> ]&ensp;", ptr ? ptr : "", lang[MSG_MA_REPLY]);
       if (ptr)
 	free(ptr);
     }
@@ -298,7 +298,7 @@ void fprint_menu0(FILE *fp, struct emailinfo *email, int pos)
 #else
     ptr = makemailcommand(set_newmsg_command, set_hmail, email->msgid, email->subject);
 #endif
-    fprintf(fp, " [ <a href=\"%s\">%s</a> ]", ptr ? ptr : "", lang[MSG_MA_NEW_MESSAGE]);
+    fprintf(fp, " [ <a href=\"%s\">%s</a> ]&ensp;", ptr ? ptr : "", lang[MSG_MA_NEW_MESSAGE]);
     if (ptr)
       free(ptr);
     fprintf (fp, "</li>\n");
@@ -311,23 +311,23 @@ void fprint_menu0(FILE *fp, struct emailinfo *email, int pos)
       fprintf (fp, "<a name=\"%s\" id=\"%s\"></a>",id,id);
     fprintf(fp, "<b>%s</b>:", lang[MSG_CONTEMPORARY_MSGS_SORTED]);
     if (show_index[dlev][DATE_INDEX])
-      fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]", 
+      fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]&ensp;", 
 	      index_name[dlev][DATE_INDEX], set_fragment_prefix, num, 
 	      lang[MSG_LTITLE_BY_DATE], lang[MSG_BY_DATE]);
     if (show_index[dlev][THREAD_INDEX])
-      fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]",
+      fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]&ensp;",
 	      index_name[dlev][THREAD_INDEX], set_fragment_prefix, num, 
 	      lang[MSG_LTITLE_BY_THREAD], lang[MSG_BY_THREAD]);
     if (show_index[dlev][SUBJECT_INDEX])
-      fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]", 
+      fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]&ensp;", 
 	      index_name[dlev][SUBJECT_INDEX], set_fragment_prefix, num, 
 	      lang[MSG_LTITLE_BY_SUBJECT], lang[MSG_BY_SUBJECT]);
     if (show_index[dlev][AUTHOR_INDEX])
-      fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]", 
+      fprintf(fp, " [ <a href=\"%s#%s%d\" title=\"%s\">%s</a> ]&ensp;", 
 	      index_name[dlev][AUTHOR_INDEX], set_fragment_prefix, num, 
 	      lang[MSG_LTITLE_BY_AUTHOR], lang[MSG_BY_AUTHOR]);
     if (show_index[dlev][ATTACHMENT_INDEX])
-      fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]", 
+      fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]&ensp;", 
 	      index_name[dlev][ATTACHMENT_INDEX], 
 	      lang[MSG_LTITLE_BY_ATTACHMENT], lang[MSG_BY_ATTACHMENT]);
     fprintf (fp, "</li>\n");
@@ -402,60 +402,54 @@ void print_index_header_links (FILE *fp, mindex_t called_from, long startdatenum
     fprintf(fp, "<nav class=\"header\">\n");
     fprintf(fp, "<ul>\n");
     /*
-     * Printout the Dates for the Starting and Ending messages 
-     * in the archive, along with a count of the messages.
+     * print the count of messages along with navigation to the start and end
+     * of the archive.
      */
 
     if ((called_from != AUTHOR_INDEX && show_index[dlev][AUTHOR_INDEX]) 
 	|| (called_from != DATE_INDEX && show_index[dlev][DATE_INDEX]) 
 	|| (called_from != THREAD_INDEX && show_index[dlev][THREAD_INDEX]) 
 	|| (called_from != SUBJECT_INDEX && show_index[dlev][SUBJECT_INDEX])) {
-      fprintf(fp, "<li><b><a href=\"#first\" title=\"jump to messages list\" "
-	      "tabindex=\"1\">%d %s</a></b>:"
-	      " <b>%s</b> %s,",
-	      amountmsgs, lang[MSG_ARTICLES],
-	      lang[MSG_STARTING], getdatestr(startdatenum));
-      fprintf(fp, " <b>%s</b> %s</li>\n",
-	      lang[MSG_ENDING], getdatestr(enddatenum));
+      fprintf(fp, "<li>%d %s. jump to [ <a href=\"#first\">%s</a> ]"
+	      amountmsgs, lang[MSG_ARTICLES], lang[MSG_START_OF_MESSAGES]);
 
       if (!set_reverse && (called_from != AUTHOR_INDEX && called_from != SUBJECT_INDEX))
-	fprintf (fp, "<li><b>%s</b>: <a href=\"#end\">%s</a></li>\n", lang[MSG_THIS_PERIOD],
-		 lang[MSG_MOST_RECENT_MESSAGES]);
+	fprintf (fp, "&ensp; [ <a href=\"#end\">%s</a> ] ", lang[MSG_END_OF_MESSAGES]);
 
-      fprintf (fp, "<li><b>%s</b>:", lang[MSG_SORT_BY]);
+      fprintf (fp, " or %s:", lang[MSG_SORT_BY]);
     }
 
     /* print the links to the other indexes */
     if (show_index[dlev][THREAD_INDEX]) {
       if (called_from != THREAD_INDEX)
-	fprintf(fp, " [ <a href=\"%s\" title=\"%s\" accesskey=\"t\" rel=\"alternate\">%s</a> ]\n", 
+	fprintf(fp, " [ <a href=\"%s\" title=\"%s\" accesskey=\"t\" rel=\"alternate\">%s</a> ]&ensp;", 
 		index_name[dlev][THREAD_INDEX], lang[MSG_LTITLE_BY_THREAD], lang[MSG_THREAD]);
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_THREAD]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_THREAD]);
     }
 
     if (show_index[dlev][AUTHOR_INDEX]) {
       if (called_from != AUTHOR_INDEX)
-	fprintf(fp, " [ <a href=\"%s\" title=\"%s\" accesskey=\"a\" rel=\"alternate\">%s</a> ]\n", 
+	fprintf(fp, " [ <a href=\"%s\" title=\"%s\" accesskey=\"a\" rel=\"alternate\">%s</a> ]&ensp;", 
 		index_name[dlev][AUTHOR_INDEX], lang[MSG_LTITLE_BY_AUTHOR], lang[MSG_AUTHOR]);
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_AUTHOR]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_AUTHOR]);
     }
 
     if (show_index[dlev][DATE_INDEX]) {
       if (called_from != DATE_INDEX)
-	fprintf(fp, " [ <a href=\"%s\" title=\"%s\" accesskey=\"d\" rel=\"alternate\">%s</a> ]\n", 
+	fprintf(fp, " [ <a href=\"%s\" title=\"%s\" accesskey=\"d\" rel=\"alternate\">%s</a> ]&ensp;", 
 		index_name[dlev][DATE_INDEX], lang[MSG_LTITLE_BY_DATE], lang[MSG_DATE]);
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_DATE]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_DATE]);
     }
 
     if (show_index[dlev][SUBJECT_INDEX]) {
       if (called_from != SUBJECT_INDEX)
-	fprintf(fp, " [ <a href=\"%s\" title=\"%s\" accesskey=\"s\" rel=\"alternate\">%s</a> ]\n", 
+	fprintf(fp, " [ <a href=\"%s\" title=\"%s\" accesskey=\"s\" rel=\"alternate\">%s</a> ]&ensp;", 
 		index_name[dlev][SUBJECT_INDEX],  lang[MSG_LTITLE_BY_SUBJECT], lang[MSG_SUBJECT]);
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_SUBJECT]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_SUBJECT]);
     }
 
     if (set_attachmentsindex) {
@@ -556,52 +550,53 @@ void print_index_footer_links(FILE *fp, mindex_t called_from, long enddatenum, i
 	|| (called_from != DATE_INDEX && show_index[dlev][DATE_INDEX]) 
 	|| (called_from != THREAD_INDEX && show_index[dlev][THREAD_INDEX]) 
 	|| (called_from != SUBJECT_INDEX && show_index[dlev][SUBJECT_INDEX]))
-      fprintf(fp, "<li><b><a href=\"#first\">%d %s</a> "
-	      "%s</b>:\n",
+      fprintf(fp, "<li>%d %s. navigate to <a href=\"#first\">%s</a>"
+	      "or %s:",
 	      amountmsgs, lang[MSG_ARTICLES],
+          lang[MSG_START_OF_MESSAGES],
 	      lang[MSG_SORT_BY]);
 
         /* print the links to the other indexes */
     if (show_index[dlev][THREAD_INDEX]) {
       if (called_from != THREAD_INDEX)
-	fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]\n", 
+	fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]&ensp;", 
 		index_name[dlev][THREAD_INDEX], lang[MSG_LTITLE_BY_THREAD], lang[MSG_THREAD]);
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_THREAD]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_THREAD]);
     }
 
     if (show_index[dlev][AUTHOR_INDEX]) {
       if (called_from != AUTHOR_INDEX)
-	fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]\n", 
+	fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]&ensp;", 
 		index_name[dlev][AUTHOR_INDEX], lang[MSG_LTITLE_BY_AUTHOR], lang[MSG_AUTHOR]);
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_AUTHOR]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_AUTHOR]);
     }
 
     if (show_index[dlev][DATE_INDEX]) {
       if (called_from != DATE_INDEX)
-	fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]\n", 
+	fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]&ensp;", 
 		index_name[dlev][DATE_INDEX], lang[MSG_LTITLE_BY_DATE], lang[MSG_DATE]);
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_DATE]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_DATE]);
     }
 
     if (show_index[dlev][SUBJECT_INDEX]) {
       if (called_from != SUBJECT_INDEX)
-	fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]\n", 
+	fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]&ensp;", 
 		index_name[dlev][SUBJECT_INDEX], lang[MSG_LTITLE_BY_SUBJECT], lang[MSG_SUBJECT]);
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_SUBJECT]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_SUBJECT]);
     }
 
     if (set_attachmentsindex) {
       if (called_from != ATTACHMENT_INDEX) {
-      fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]\n", 
+      fprintf(fp, " [ <a href=\"%s\" title=\"%s\">%s</a> ]&ensp;", 
 	      index_name[dlev][ATTACHMENT_INDEX], lang[MSG_LTITLE_BY_ATTACHMENT], 
 	      lang[MSG_ATTACHMENT]);
       }
       else
-	fprintf(fp, " [ %s ]\n", lang[MSG_ATTACHMENT]);
+	fprintf(fp, " [ %s ]&ensp;", lang[MSG_ATTACHMENT]);
     }
     fprintf (fp, "</li>\n");
 
@@ -2317,8 +2312,7 @@ void writearticles(int startnum, int maxnum)
 	 */
 
 	fprintf (fp, "<footer>\n");
-	fprintf (fp, "<nav class=\"footer\" title=\"%s\">\n", 
-		 lang[MSG_RELATED_MESSAGES]);
+	fprintf (fp, "<nav class=\"footer\">\n");
 	
 	print_links(fp, email, PAGE_BOTTOM, FALSE);
 
@@ -2480,15 +2474,14 @@ void writedates(int amountmsgs, struct emailinfo *email)
 	if (*prev_date_str)  /* close the previous date item */
 	  fprintf (fp, "</ul></li>\n");
 	fprintf(fp, "</ul>\n");
-	printlaststats (fp, end_date_num);
 	fprintf (fp, "</div>\n");
       }
 
     /* 
      * Print out archive information links at the bottom of the index
      */
-    print_index_footer_links(fp, DATE_INDEX, end_date_num, amountmsgs,
-			     email ? email->subdir : NULL);
+    // print_index_footer_links(fp, DATE_INDEX, end_date_num, amountmsgs,
+			 //     email ? email->subdir : NULL);
 
     /* 
      * Print the index page footer.
@@ -2570,9 +2563,8 @@ void writeattachments(int amountmsgs, struct emailinfo *email)
     /* 
      * Print out archive information links at the bottom of the index
      */
-    printlaststats (fp, end_date_num);
-    print_index_footer_links(fp, ATTACHMENT_INDEX, end_date_num, amountmsgs,
-			     email ? email->subdir : NULL);
+    // print_index_footer_links(fp, ATTACHMENT_INDEX, end_date_num, amountmsgs,
+			     // email ? email->subdir : NULL);
     
     /* 
      * Print the index page footer.
@@ -2654,9 +2646,8 @@ void writethreads(int amountmsgs, struct emailinfo *email)
     /* 
      * Print out archive information links at the bottom of the index
      */
-    printlaststats (fp, end_date_num);
-    print_index_footer_links(fp, THREAD_INDEX, end_date_num, amountmsgs,
-			     email ? email->subdir : NULL);
+    // print_index_footer_links(fp, THREAD_INDEX, end_date_num, amountmsgs,
+			 //     email ? email->subdir : NULL);
     
     printfooter(fp, ihtmlfooterfile, set_label, set_dir, lang[MSG_BY_THREAD], thrdname, TRUE);
 
@@ -2809,9 +2800,8 @@ void writesubjects(int amountmsgs, struct emailinfo *email)
      * Print out archive information links at the bottom of the index
      */
 
-    printlaststats (fp, end_date_num);
-    print_index_footer_links(fp, SUBJECT_INDEX, end_date_num, amountmsgs,
-				 email ? email->subdir : NULL);
+    // print_index_footer_links(fp, SUBJECT_INDEX, end_date_num, amountmsgs,
+				//  email ? email->subdir : NULL);
 
     printfooter(fp, ihtmlfooterfile, set_label, set_dir, lang[MSG_BY_SUBJECT], subjname, TRUE);
 
@@ -2966,9 +2956,8 @@ void writeauthors(int amountmsgs, struct emailinfo *email)
      * of the index page
      */
 
-    printlaststats (fp, end_date_num);
-    print_index_footer_links(fp, AUTHOR_INDEX, end_date_num, amountmsgs,
-				 email ? email->subdir : NULL);
+    // print_index_footer_links(fp, AUTHOR_INDEX, end_date_num, amountmsgs,
+				//  email ? email->subdir : NULL);
 
     printfooter(fp, ihtmlfooterfile, set_label, set_dir, lang[MSG_BY_AUTHOR], authname, TRUE);
 
@@ -3191,7 +3180,7 @@ static void printmonths(FILE *fp, char *summary_filename, int amountmsgs)
 		 * of the index page
 		 */
 
-		print_index_footer_links(fp1, j, last_date, count, NULL);
+		// print_index_footer_links(fp1, j, last_date, count, NULL);
 
 		printfooter(fp1, ihtmlfooterfile, set_label, set_dir, subject_title, 
 			    save_name[j], FALSE);
@@ -3424,7 +3413,7 @@ void write_toplevel_indices(int amountmsgs)
       /* 
        * Print out archive information links at the bottom of the index
        */
-      print_index_footer_links(fp, FOLDERS_INDEX, lastdatenum, amountmsgs, NULL);
+      // print_index_footer_links(fp, FOLDERS_INDEX, lastdatenum, amountmsgs, NULL);
       printfooter(fp, ihtmlfooterfile, set_label, set_dir, subject, filename, TRUE);
       fclose(fp);
       

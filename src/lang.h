@@ -614,8 +614,8 @@ char *en[] = {       /* English */
   "New Message",                 /* New Message        -HTML*/
   "Reply",                       /* Reply              -HTML*/
   "About this list",             /* About this list    -HTML*/
-  "End of Messages",             /* End of Messages    -HTML*/
-  "Start of Messages",           /* Start of Messages  -HTML*/
+  "end of messages",             /* End of Messages    -HTML*/
+  "start of messages",           /* Start of Messages  -HTML*/
   "Date view",                   /* Date view          -HTML*/
   "Thread view",                 /* Thread view        -HTML*/
   "Subject view",                /* Subject view       -HTML*/
